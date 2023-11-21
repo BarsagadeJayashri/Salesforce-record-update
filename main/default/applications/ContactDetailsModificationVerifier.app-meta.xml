@@ -36,6 +36,7 @@
     <tabs>Account_List</tabs>
     <tabs>Account_Custom__c</tabs>
     <tabs>Contact_Custom__c</tabs>
+    <tabs>Updated_Contact</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Pipeline_UtilityBar</utilityBar>
 </CustomApplication>
