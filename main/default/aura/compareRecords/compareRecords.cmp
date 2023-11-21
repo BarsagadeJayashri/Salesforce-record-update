@@ -1,0 +1,53 @@
+<aura:component controller="custConController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="objCustCon" type="Contact_Custom__c" default="{'sObjectType' : 'Contact_Custom__c'}"/>
+    <aura:attribute name="objOriginalCon" type="Contact" default="{'sObjectType' : 'Contact'}"/>
+    <aura:attribute name="recordId" type="string" />
+    <aura:handler  name="init" value="{!this}" action="{!c.doInit}" />
+    <lightning:card>
+        
+       
+          <div class="slds-grid slds-gutters">
+            <div class="slds-col">
+                <span>
+                    <label class="slds-form-element__label" for="form-element-01">Old values</label>
+                    <div class="slds-box">
+                        <aura:if isTrue="{!v.objCustCon.First_Name__c != v.objOriginalCon.FirstName}">
+                            First Name :<Output type="text"  class="slds-input" value="{!v.objOriginalCon.FirstName}"/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.objCustCon.Last_Name__c != v.objOriginalCon.LastName}">
+                            Last Name :<Output type="text"  class="slds-input" value="{!v.objOriginalCon.LastName}"/>
+                        </aura:if>
+                        <aura:if isTrue="{!v.objCustCon.Account_Name__c != v.objOriginalCon.Account.Name}">
+                            Account ID :<Output type="text"  class="slds-input" value="{!v.objOriginalCon.Account.Name}" />
+                        </aura:if>
+                    </div>
+                </span>
+            </div>
+            <div class="slds-col">
+                <span>
+                    <div class="slds-form slds-form_stacked">
+                        
+                       <div class="slds-form-element">
+                            <label class="slds-form-element__label" for="form-element-01">New values</label>
+                            <div class="slds-box">
+                                <aura:if isTrue="{!v.objCustCon.First_Name__c != v.objOriginalCon.FirstName}">
+                                    First Name :<Output type="text"  class="slds-input" value="{!v.objCustCon.First_Name__c}"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.objCustCon.Last_Name__c != v.objOriginalCon.LastName}">
+                                    Last Name :<Output type="text"  class="slds-input" value="{!v.objCustCon.Last_Name__c}"/>
+                                </aura:if>
+                                <aura:if isTrue="{!v.objCustCon.Account_Name__c != v.objOriginalCon.Account.Name}">
+                                    Account ID :<Output type="text"  class="slds-input" value="{!v.objCustCon.Account_Name__c}" />
+                                </aura:if>
+                            </div>
+                        </div>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+        
+        <lightning:button variant="brand" iconName="utility:approval" label="Approve" title="Approve" onclick="{!c.approveUpdateController }" />
+        <lightning:button variant="destructive" iconName="utility:close" label="Skip" title="Skip" onclick="{!c.SkipUpdateController }" />
+    </lightning:card>
+</aura:component>

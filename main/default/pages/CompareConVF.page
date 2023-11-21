@@ -1,0 +1,159 @@
+<!--<apex:page standardController="Contact_Custom__c" recordSetVar="custCons" extensions="ProcessCustCon" action="{!redirectToLC}" />-->
+<apex:page standardController="Contact_Custom__c" recordSetVar="updatedCon" extensions="ProcessCustCon" >
+    <style>
+        <!--#UpdatedCon {
+border-collapse: collapse;
+border-color: #515A5A;
+border-style:solid;
+border-width:thin;
+table-layout: fixed;
+word-wrap:break-word;
+height:200px; 
+}-->
+        #UpdatedCon td, #CustCon th {
+        border: 1px solid #CCD1D1;
+        font-size:30;
+        Width:250px;
+        Height:60px;
+        word-wrap:break-word;
+        }
+        #UpdatedCon tr:nth-child(even){background-color: #FDFEFE;}{width:150px;}
+        #UpdatedCon tr:nth-child(odd){background-color: #FDFEFE;}{width:150px;}
+        #UpdatedCon tr:hover {background-color: #D6EAF8;}
+        #UpdatedCon tr{
+        width : 200px;
+        }
+        #UpdatedCon th {
+        background-color: #2874A6;
+        color: white;
+        width:300px;
+        font-size:30;
+        word-wrap:break-word;
+        font-weight:normal;
+        }
+        #pgmessagesid{
+        -webkit-animation: cssAnimation 2s forwards;
+        animation: cssAnimation 2s forwards;
+        }
+        @keyframes cssAnimation {
+        0% {opacity: 1;}
+        90% {opacity: 1;}
+        100% {opacity: 0;}
+        }
+        @-webkit-keyframes cssAnimation {
+        0% {opacity: 1;}
+        90% {opacity: 1;}
+        100% {opacity: 0;}
+        }        <!--
+.errorClass {
+background-color: red;
+}-->
+    </style>
+     
+    
+   <apex:form id="frm1">
+        <div id="pgmessagesid">
+            <apex:pageMessages />
+        </div>
+        
+        <apex:pageBlock id="pb1" title="Compare Contact">
+            
+            <apex:pageblockButtons >
+                <apex:commandButton value="|<< First" action="{!firstMethod}" disabled="{!disableFirstButtonFlag}" />
+                <apex:commandButton value="< Previous" action="{!previousMethod}" disabled="{!disablepreviousButtonFlag }"/>
+                <apex:commandButton value="Next >" action="{!nextMethod}" disabled="{!disableNextButtonFlag }"/> 
+                <apex:commandButton value="Last >>|" action="{!lastMethod}" disabled="{!disableLastButtonFlag }"/> 
+            </apex:pageblockButtons>
+            
+            <apex:pageBlockSection columns="1"  title="Current Record : {!currentRecord} / {!totalRecords}        Page: {!currentPage}  / {!totalPages}">
+                
+            </apex:pageBlockSection>
+            <br/>
+            <div align="center" draggable="false" >   
+                <!-- <div id="leftc" style="float:left; width:40%;border-color: red;"> -->
+                
+                <table id="UpdatedCon" style="border: 0.7px solid black; margin-left: 10px; " cellpadding="8">  
+                    <tr >
+                        <th style="background-color:grey">Fields</th>
+                        
+                        <td style="background-color:grey;color:white">Old Values</td>
+                        <td style="background-color:grey;color:white">New Values</td>
+                        
+                    </tr>
+                    <tr>
+                        <th>Name:</th>
+                        <apex:repeat value="{!wrapperList}" var="UpCustCon">
+                            <td >{!UpCustCon.originalCon.Id}</td>
+                            <td style="color:{!IF(UpCustCon.updatedCon.Name==UpCustCon.originalCon.Id,'black','red')}">{!UpCustCon.updatedCon.Name}</td>
+                        </apex:repeat>
+                    </tr>
+                    <tr>
+                        <th>Account:</th>
+                        <apex:repeat value="{!wrapperList}" var="UpCustCon"> 
+                            <td>{!UpCustCon.originalCon.Account.Name}</td>
+                            <td style="color:{!IF(UpCustCon.updatedCon.Account__r.Standard_Account_ID__c==UpCustCon.originalCon.AccountId,'black','red')}"><apex:inputCheckbox value="{!UpCustCon.isAccount}" rendered="{!UpCustCon.updatedCon.Account__r.Standard_Account_ID__c != UpCustCon.originalCon.AccountId}"/>{!UpCustCon.updatedCon.Account_Name__c}</td>
+                            
+                        </apex:repeat>
+                    </tr>
+                    <tr>
+                        <th>First Name:</th>
+                        <apex:repeat value="{!wrapperList}" var="UpCustCon">
+                            <td>{!UpCustCon.originalCon.FirstName}</td>
+                            <td style="color:{!IF(UpCustCon.updatedCon.First_Name__c==UpCustCon.originalCon.FirstName,'black','red')}"><apex:inputCheckbox value="{!UpCustCon.isFirstName}" rendered="{!UpCustCon.updatedCon.First_Name__c !=  UpCustCon.originalCon.FirstName}"/>{!UpCustCon.updatedCon.First_Name__c}</td>
+                            
+                        </apex:repeat>
+                    </tr>
+                    <tr>
+                        <th>Last Name:</th>
+                        <apex:repeat value="{!wrapperList}" var="UpCustCon">
+                            <td>{!UpCustCon.originalCon.LastName}</td>
+                            <td style="color:{!IF(UpCustCon.updatedCon.Last_Name__c == UpCustCon.originalCon.LastName,'black','red')}"><apex:inputCheckbox value="{!UpCustCon.isLastName}" rendered="{!UpCustCon.updatedCon.Last_Name__c != UpCustCon.originalCon.LastName}"/>{!UpCustCon.updatedCon.Last_Name__c}</td>
+                            
+                        </apex:repeat>
+                    </tr>
+                    
+                </table>
+                
+                <!-- </div> -->
+              <br/>
+                
+                
+                <apex:commandButton value="Update" action="{!updateRec}"  />
+                <apex:commandButton value="Skip" action="{!skipRec}"/>
+            </div>
+            
+            <!-- <div id="rightc" style="float:right; width:50%;height: 67px; vertical-align: bottom; border-color: green;">
+Old Valses
+<table id="OriginalCon" style="border: 0.5px solid black; margin-left: 5px; " cellpadding="8">  
+<tr>
+<th>Name:</th>
+<apex:repeat value="{!wrapperList}" var="objCon">
+<td>{!objCon.originalCon.Id}</td>
+
+</apex:repeat>
+</tr>
+<tr>
+<th>Account:</th>
+<apex:repeat value="{!wrapperList}" var="objCon">
+<td>{!objCon.originalCon.Account.Name}</td>
+</apex:repeat>
+</tr>
+<tr>
+<th>First Name:</th>
+<apex:repeat value="{!wrapperList}" var="objCon">
+<td>{!objCon.originalCon.FirstName}</td>
+</apex:repeat>
+</tr>
+<tr>
+<th>Last Name:</th>
+<apex:repeat value="{!wrapperList}" var="objCon">
+<td>{!objCon.originalCon.LastName}</td>
+</apex:repeat>
+</tr>
+
+</table>
+</div> -->
+       </apex:pageBlock>
+    </apex:form> -->
+    
+</apex:page>

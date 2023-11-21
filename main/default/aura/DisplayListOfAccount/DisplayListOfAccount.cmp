@@ -1,0 +1,22 @@
+<aura:component controller="accountController" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="ShowRecords" type="List"/>
+    <aura:attribute name="ShowRecordsColumn" type="List"/>
+    <aura:attribute name="selectedAccountRecordsList" type="List"/>
+    <aura:attribute name="selectedAccountCount" type="Integer" default='0'/>
+    
+    <aura:handler  name="init" value="{!this}" action="{!c.Accountcontroller}" />
+    
+    <lightning:button variant="brand" iconName="utility:send" label="Send" title="Send" onclick="{!c.sendRecordsController }" />
+    
+    
+    
+    <!-- lightning table starts-->
+    <lightning:datatable
+                         keyField="id"
+                         data="{!v.ShowRecords }"
+                         columns="{!v.ShowRecordsColumn }"
+                         hideCheckboxColumn="false"  
+                         onrowselection="{! c.SelectedController}"
+                         />
+    <!-- lightning table ends-->
+</aura:component>
